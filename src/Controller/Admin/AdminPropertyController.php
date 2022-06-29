@@ -73,9 +73,14 @@ class AdminPropertyController extends AbstractController
 	}
 
    #[Route('/bien/{id}', name:'app_admin_property_delete', methods:['DELETE','POST'])]
-	public function delete(Property $property){
-       $this->em->remove($property);
-       $this->em->flush();
-       return $this->redirectToRoute('app_admin_property_index');
+	public function delete(Property $property, Request $request){
+		$submittedToken = $request->request->get('token');
+	//if($this->isCsrfTokenValid('delete-item', $submittedToken))||Doc:https://symfony.com/doc/current/security/csrf.html
+       if($this->isCsrfTokenValid('delete'.$property->getId(), $submittedToken)){
+          $this->em->remove($property);
+          $this->em->flush();
+          return $this->redirectToRoute('app_admin_property_index');
+       }
+       
 	}
 }
