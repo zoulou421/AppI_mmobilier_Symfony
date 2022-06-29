@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Cocur\Slugify\Slugify;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 class Property
 {
@@ -20,6 +22,7 @@ class Property
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 5)]
     private $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -49,6 +52,7 @@ class Property
     #[ORM\Column(type: 'string', length: 255)]
     private $address;
 
+    #[Assert\Regex('/^[0-9]{5}$/')]
     #[ORM\Column(type: 'string', length: 255)]
     private $postal_code;
 
